@@ -1,0 +1,4 @@
+[wokwi]
+version = 1
+firmware = 'build/tarefa_UART_SPI_I2C.uf2'
+elf = 'build/tarefa_UART_SPI_I2C.elf'
