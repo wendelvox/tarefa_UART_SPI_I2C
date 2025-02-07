@@ -111,13 +111,12 @@ void button_irq_handler(uint gpio, uint32_t events) {
 }
 
 //Função para exibir informação no Display
-
-void display_number(ssd1306_t *ssd, int number) {
-    char buffer[2];  // Buffer para armazenar o número como string
-    sprintf(buffer, "%d", number);  // Converte o número para string
+void display_char(ssd1306_t *ssd, char c) {
+    char buffer[2];  // Buffer para armazenar o caractere como string
+    sprintf(buffer, "%c", c);  // Converte o caractere para string
     
     ssd1306_fill(ssd, false);  // Limpa o display
-    ssd1306_draw_string(ssd, buffer, 55, 20);  // Desenha o número no centro do display
+    ssd1306_draw_string(ssd, buffer, 55, 20);  // Desenha o caractere no centro do display
     ssd1306_send_data(ssd);  // Atualiza o display
 }
 
@@ -219,16 +218,21 @@ int main() {
         
 
            // Verifica entrada UART
-        if (uart_is_readable(UART_ID)) {
-            char c = uart_getc(UART_ID);
-            if (c >= '0' && c <= '9') { // Se for um número válido
-                current_number = c - '0'; // Converte char para int
-                matriz_ws2812(current_number, pio, sm);
-                display_number(&ssd, current_number);  // Atualiza o display OLED
-            }
-            uart_putc(UART_ID, c);
-            uart_puts(UART_ID, " <- Número exibido\r\n");
-        }
+      if (uart_is_readable(UART_ID)) {
+    char c = uart_getc(UART_ID);
+    
+    if (c >= '0' && c <= '9') { // Se for um número válido
+        current_number = c - '0'; // Converte char para int
+        matriz_ws2812(current_number, pio, sm); // Exibe na matriz de LEDs
+    } else {  // Para qualquer outro caractere
+        display_char(&ssd, c); // Exibe o caractere no display OLED
+    }
+    
+    uart_putc(UART_ID, c);  // Envia o caractere de volta para a UART
+    uart_puts(UART_ID, " <- Caractere exibido\r\n");
+}
+
+        
 
          // Verifica botão A (LED Verde)
         if (is_button_pressed(BUTTON_A)) {
