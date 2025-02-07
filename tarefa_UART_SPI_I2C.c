@@ -112,43 +112,50 @@ void button_irq_handler(uint gpio, uint32_t events) {
 
 //Função para exibir informação no Display
 void display_char(ssd1306_t *ssd, char c) {
+    bool cor = true;
     char buffer[2];  // Buffer para armazenar o caractere como string
-    sprintf(buffer, "%c", c);  // Converte o caractere para string
-    
+    sprintf(buffer, "%c", c);  // Converte o caractere para string    
     ssd1306_fill(ssd, false);  // Limpa o display
+    ssd1306_rect(ssd, 3, 3, 122, 58, cor, !cor); // Desenha um retângulo
     ssd1306_draw_string(ssd, buffer, 55, 20);  // Desenha o caractere no centro do display
     ssd1306_send_data(ssd);  // Atualiza o display
 }
 
 // Função para exibir o estado do LED no display
 void display_led_green_state(ssd1306_t *ssd, bool led_state) {
+    bool cor = !cor;
     char buffer[20];  // Buffer para armazenar o texto
     if (led_state) {
+        
         sprintf(buffer, "LED VERDE ON");  // Se o LED estiver aceso
     } else {
+      
         sprintf(buffer, "LED VERDE OFF");  // Se o LED estiver apagado
     }
     
     ssd1306_fill(ssd, false);  // Limpa o display
+    ssd1306_rect(ssd, 3, 3, 122, 58, cor, !cor); // Desenha um retângulo
     ssd1306_draw_string(ssd, buffer, 10, 20);  // Desenha o texto no display
     ssd1306_send_data(ssd);  // Atualiza o display
 }
 
 // Função para exibir o estado do LED no display
 void display_led_blue_state(ssd1306_t *ssd, bool led_state) {
+    bool cor = !cor;
     char buffer[20];  // Buffer para armazenar o texto
     if (led_state) {
+      
         sprintf(buffer, "LED AZUL ON");  // Se o LED estiver aceso
     } else {
+        
         sprintf(buffer, "LED AZUL OFF");  // Se o LED estiver apagado
     }
     
     ssd1306_fill(ssd, false);  // Limpa o display
+    ssd1306_rect(ssd, 3, 3, 122, 58, cor, !cor); // Desenha um retângulo
     ssd1306_draw_string(ssd, buffer, 10, 20);  // Desenha o texto no display
     ssd1306_send_data(ssd);  // Atualiza o display
 }
-
-
 
 // Função para inicializar os LEDs, BOTÕES, MATRIZ E DISPLAY
 void setup(PIO *pio, uint *sm) {
@@ -179,6 +186,7 @@ void setup(PIO *pio, uint *sm) {
  // Inicializa o PIO para a matriz WS2812
     *pio = pio0;
     *sm = 0;
+    
     uint offset = pio_add_program(*pio, &tarefa_UART_SPI_I2C_program);
     tarefa_UART_SPI_I2C_program_init(*pio, *sm, offset, WS2812_PIN, 800000, false);
     
@@ -191,11 +199,11 @@ void setup(PIO *pio, uint *sm) {
   gpio_pull_up(I2C_SDA); // Pull up the data line
   gpio_pull_up(I2C_SCL); // Pull up the clock line  
 
-
-
     // Mensagem inicial
     uart_puts(UART_ID, "UART - Digite um número (0-9) para exibir na matriz:\r\n");
 }
+
+
 
 int main() {
     PIO pio;
@@ -213,14 +221,12 @@ int main() {
     ssd1306_send_data(&ssd);
     bool cor = true;
 
-
-    while (1) {
-        
+    while (1) {       
 
            // Verifica entrada UART
-      if (uart_is_readable(UART_ID)) {
+    if (uart_is_readable(UART_ID)) {
     char c = uart_getc(UART_ID);
-    
+
     if (c >= '0' && c <= '9') { // Se for um número válido
         current_number = c - '0'; // Converte char para int
         matriz_ws2812(current_number, pio, sm); // Exibe na matriz de LEDs
@@ -230,21 +236,19 @@ int main() {
     
     uart_putc(UART_ID, c);  // Envia o caractere de volta para a UART
     uart_puts(UART_ID, " <- Caractere exibido\r\n");
-}
-
-        
-
+    }
          // Verifica botão A (LED Verde)
-        if (is_button_pressed(BUTTON_A)) {
+        if (button_a_pressed) {
+            button_a_pressed = false;  // Reseta a variável
             led_green_state = !led_green_state;  // Alterna o estado do LED verde
             gpio_put(LED_PIN_G, led_green_state); // Atualiza o LED verde
             uart_puts(UART_ID, "Botão A pressionado - LED Verde alternado\r\n");
             display_led_green_state(&ssd, led_green_state);  // Atualiza o display com o estado do LED
-
         }
 
         // Verifica botão B (LED Azul)
-        if (is_button_pressed(BUTTON_B)) {
+        if (button_b_pressed) {
+            button_b_pressed = false;  // Reseta a variável
             led_blue_state = !led_blue_state;  
             gpio_put(LED_PIN_B, led_blue_state); // Atualiza o LED azul
             uart_puts(UART_ID, "Botão B pressionado - LED Azul alternado\r\n");
