@@ -46,6 +46,8 @@ bool button_b_pressed = false;
 uint64_t last_button_a_time = 0;
 uint64_t last_button_b_time = 0;
 const uint64_t DEBOUNCE_DELAY = 200 * 1000; // 200ms debounce
+bool led_green_state = false;  // Estado do LED Verde
+bool led_blue_state = false;  // Estado do LED Verde
 
 
 
@@ -116,6 +118,34 @@ void display_number(ssd1306_t *ssd, int number) {
     
     ssd1306_fill(ssd, false);  // Limpa o display
     ssd1306_draw_string(ssd, buffer, 55, 20);  // Desenha o número no centro do display
+    ssd1306_send_data(ssd);  // Atualiza o display
+}
+
+// Função para exibir o estado do LED no display
+void display_led_green_state(ssd1306_t *ssd, bool led_state) {
+    char buffer[20];  // Buffer para armazenar o texto
+    if (led_state) {
+        sprintf(buffer, "LED VERDE ON");  // Se o LED estiver aceso
+    } else {
+        sprintf(buffer, "LED VERDE OFF");  // Se o LED estiver apagado
+    }
+    
+    ssd1306_fill(ssd, false);  // Limpa o display
+    ssd1306_draw_string(ssd, buffer, 10, 20);  // Desenha o texto no display
+    ssd1306_send_data(ssd);  // Atualiza o display
+}
+
+// Função para exibir o estado do LED no display
+void display_led_blue_state(ssd1306_t *ssd, bool led_state) {
+    char buffer[20];  // Buffer para armazenar o texto
+    if (led_state) {
+        sprintf(buffer, "LED AZUL ON");  // Se o LED estiver aceso
+    } else {
+        sprintf(buffer, "LED AZUL OFF");  // Se o LED estiver apagado
+    }
+    
+    ssd1306_fill(ssd, false);  // Limpa o display
+    ssd1306_draw_string(ssd, buffer, 10, 20);  // Desenha o texto no display
     ssd1306_send_data(ssd);  // Atualiza o display
 }
 
@@ -202,15 +232,19 @@ int main() {
 
          // Verifica botão A (LED Verde)
         if (is_button_pressed(BUTTON_A)) {
-            gpio_put(LED_PIN_G, !gpio_get(LED_PIN_G));
+            led_green_state = !led_green_state;  // Alterna o estado do LED verde
+            gpio_put(LED_PIN_G, led_green_state); // Atualiza o LED verde
             uart_puts(UART_ID, "Botão A pressionado - LED Verde alternado\r\n");
-         
+            display_led_green_state(&ssd, led_green_state);  // Atualiza o display com o estado do LED
+
         }
 
         // Verifica botão B (LED Azul)
         if (is_button_pressed(BUTTON_B)) {
-            gpio_put(LED_PIN_B, !gpio_get(LED_PIN_B));
+            led_blue_state = !led_blue_state;  
+            gpio_put(LED_PIN_B, led_blue_state); // Atualiza o LED azul
             uart_puts(UART_ID, "Botão B pressionado - LED Azul alternado\r\n");
+            display_led_blue_state(&ssd, led_blue_state);  // Atualiza o display com o estado do LED
         }
         sleep_ms(40); // Pequeno atraso
     }
