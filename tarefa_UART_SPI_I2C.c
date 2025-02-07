@@ -14,6 +14,13 @@
 #include "matriz_led.h"
 #include "ws2812.pio.h" 
 #include "hardware/uart.h"
+#include "hardware/i2c.h"
+#include "inc/ssd1306.h"
+#include "inc/font.h"
+#define I2C_PORT i2c1
+#define I2C_SDA 14
+#define I2C_SCL 15
+#define endereco 0x3C
 
 
 #define UART_ID uart0 // Seleciona a UART0
@@ -101,6 +108,18 @@ void button_irq_handler(uint gpio, uint32_t events) {
     }
 }
 
+//Função para exibir informação no Display
+
+void display_number(ssd1306_t *ssd, int number) {
+    char buffer[2];  // Buffer para armazenar o número como string
+    sprintf(buffer, "%d", number);  // Converte o número para string
+    
+    ssd1306_fill(ssd, false);  // Limpa o display
+    ssd1306_draw_string(ssd, buffer, 55, 20);  // Desenha o número no centro do display
+    ssd1306_send_data(ssd);  // Atualiza o display
+}
+
+
 
 // Função para inicializar os LEDs, BOTÕES, MATRIZ E DISPLAY
 void setup(PIO *pio, uint *sm) {
@@ -134,26 +153,48 @@ void setup(PIO *pio, uint *sm) {
     uint offset = pio_add_program(*pio, &tarefa_UART_SPI_I2C_program);
     tarefa_UART_SPI_I2C_program_init(*pio, *sm, offset, WS2812_PIN, 800000, false);
     
+
+  // I2C Initialisation. Using it at 400Khz.
+  i2c_init(I2C_PORT, 400 * 1000);
+
+  gpio_set_function(I2C_SDA, GPIO_FUNC_I2C); // Set the GPIO pin function to I2C
+  gpio_set_function(I2C_SCL, GPIO_FUNC_I2C); // Set the GPIO pin function to I2C
+  gpio_pull_up(I2C_SDA); // Pull up the data line
+  gpio_pull_up(I2C_SCL); // Pull up the clock line  
+
+
+
     // Mensagem inicial
     uart_puts(UART_ID, "UART - Digite um número (0-9) para exibir na matriz:\r\n");
 }
-
 
 int main() {
     PIO pio;
     uint sm;
     setup(&pio, &sm);
 
+    
+    ssd1306_t ssd; // Inicializa a estrutura do display
+    ssd1306_init(&ssd, WIDTH, HEIGHT, false, endereco, I2C_PORT); // Inicializa o display
+    ssd1306_config(&ssd); // Configura o display
+    ssd1306_send_data(&ssd); // Envia os dados para o display
+
+    // Limpa o display. O display inicia com todos os pixels apagados.
+    ssd1306_fill(&ssd, false);
+    ssd1306_send_data(&ssd);
+    bool cor = true;
 
 
     while (1) {
-        // Verifica entrada UART
+        
+
            // Verifica entrada UART
         if (uart_is_readable(UART_ID)) {
             char c = uart_getc(UART_ID);
             if (c >= '0' && c <= '9') { // Se for um número válido
                 current_number = c - '0'; // Converte char para int
                 matriz_ws2812(current_number, pio, sm);
+                display_number(&ssd, current_number);  // Atualiza o display OLED
             }
             uart_putc(UART_ID, c);
             uart_puts(UART_ID, " <- Número exibido\r\n");
