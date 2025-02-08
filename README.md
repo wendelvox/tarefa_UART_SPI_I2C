@@ -66,7 +66,7 @@ sudo minicom -b 115200 -o -D /dev/ttyUSB0
 ```
 Pressione os botões **A e B** para ligar/desligar os LEDs.
 
-## 📷 Imagens (Opcional)
+## 📷 Imagens 
 ![image](https://github.com/user-attachments/assets/0e81d643-72ad-4562-bcc5-e0622b92a482)
 
 
