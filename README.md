@@ -1,5 +1,7 @@
 # Projeto: Controle de LEDs e Display com Raspberry Pi Pico e BitDogLab
 
+## Autor: Wendel
+## Video: https://youtu.be/cBBmoyHNMHo
 ## 📌 Objetivos
 
 Este projeto tem os seguintes objetivos:
@@ -44,7 +46,7 @@ Certifique-se de ter instalado:
 
 Clone este repositório:
 ```bash
-git clone https://github.com/seu-usuario/seu-repositorio.git
+git clone https://github.com/wendelvox/tarefa_UART_SPI_I2C.git
 cd seu-repositorio
 ```
 
