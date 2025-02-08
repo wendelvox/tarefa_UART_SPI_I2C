@@ -8,7 +8,7 @@ pixel_t leds[LED_COUNT];
 PIO np_pio;
 uint sm;
 
-
+// Carrega promagram PIO
 void npInit(uint pin) {
     uint offset = pio_add_program(pio0, &tarefa_UART_SPI_I2C_program);
     np_pio = pio0;
@@ -61,142 +61,142 @@ void npDraw(uint8_t vetorR[5][5], uint8_t vetorG[5][5], uint8_t vetorB[5][5]) {
 
 // Vetor que representa os LEDs vermelhos e verdes da matriz
 uint8_t vetorRG[5][5] = {
-    {  0  ,  0  ,  0  ,  0  ,  0  },
-    {  0  ,  0  ,  0  ,  0  ,  0  },
-    {  0  ,  0  ,  0  ,  0  ,  0  },
-    {  0  ,  0  ,  0  ,  0  ,  0  },
-    {  0  ,  0  ,  0  ,  0  ,  0  }
+    { 0 , 0 , 0 , 0 , 0 },
+    { 0 , 0 , 0 , 0 , 0 },
+    { 0 , 0 , 0 , 0 , 0 },
+    { 0 , 0 , 0 , 0 , 0 },
+    { 0 , 0 , 0 , 0 , 0 }
 };
 
 void num_0() {
   // Vetor que representa os LEDs azuis
   uint8_t vetorB[5][5] = {
-    {  0  , 1 , 1 , 1 ,  0  },
-    {  0  , 1 ,  0  , 1 ,  0  },
-    {  0  , 1 ,  0  , 1 ,  0  },
-    {  0  , 1 ,  0  , 1 ,  0  },
-    {  0  , 1 , 1 , 1 ,  0  }
+    { 0 , 1 , 1 , 1 , 0 },
+    { 0 , 1 , 0 , 1 , 0 },
+    { 0 , 1 , 0 , 1 , 0 },
+    { 0 , 1 , 0 , 1 , 0 },
+    { 0 , 1 , 1 , 1 , 0 }
   };
   npDraw(vetorRG,vetorRG,vetorB); // Carrega os buffers.
   npWrite();                      // Escreve na matriz de LEDs.
-  npClear();                      // Limpa os buffers (não necessário, mas por garantia).
+
 }
 
 void num_1() {
   uint8_t vetorB[5][5] = {
-    {  0  ,  0  , 1 ,  0  ,  0  },
-    {  0  ,  1 , 1 ,  0  ,  0  },
-    {  0  ,  0  , 1 ,  0  ,  0  },
-    {  0  ,  0  , 1 ,  0  ,  0  },
-    {  0  ,  1 , 1 , 1 ,  0  }
+    { 0 , 0 , 1 , 0 , 0 },
+    { 0 , 1 , 1 , 0 , 0 },
+    { 0 , 0 , 1 , 0 , 0 },
+    { 0 , 0 , 1 , 0 , 0 },
+    { 0 , 1 , 1 , 1 , 0 }
   };
   npDraw(vetorRG, vetorRG, vetorB);
   npWrite();
-  npClear();
+
 }
 
 void num_2() {
   uint8_t vetorB[5][5] = {
-    {  0  , 1 , 1 , 1 ,  0  },
-    {  0  ,  0  ,  0  , 1 ,  0  },
-    {  0  , 1 , 1 , 1 ,  0  },
-    {  0  , 1 ,  0  ,  0  ,  0  },
-    {  0  , 1 , 1 , 1 ,  0  }
+    { 0 , 1 , 1 , 1 , 0 },
+    { 0 , 0 , 0 , 1 , 0 },
+    { 0 , 1 , 1 , 1 , 0 },
+    { 0 , 1 , 0 , 0 , 0 },
+    { 0 , 1 , 1 , 1 , 0 }
   };
   npDraw(vetorRG, vetorRG, vetorB);
   npWrite();
-  npClear();
+
 }
 
 void num_3() {
   uint8_t vetorB[5][5] = {
-    {  0  , 1 , 1 , 1 ,  0  },
-    {  0  ,  0  ,  0  , 1 ,  0  },
-    {  0  , 1 , 1 , 1 ,  0  },
-    {  0  ,  0  ,  0  , 1 ,  0  },
-    {  0  , 1 , 1 , 1 ,  0  }
+    { 0 , 1 , 1 , 1 , 0 },
+    { 0 , 0 , 0 , 1 , 0 },
+    { 0 , 1 , 1 , 1 , 0 },
+    { 0 , 0 , 0 , 1 , 0 },
+    { 0 , 1 , 1 , 1 , 0 }
   };
   npDraw(vetorRG, vetorRG, vetorB);
   npWrite();
-  npClear();
+
 }
 
 void num_4() {
   uint8_t vetorB[5][5] = {
-    {  0  , 1 ,  0  , 1 ,  0  },
-    {  0  , 1 ,  0  , 1 ,  0  },
-    {  0  , 1 , 1 , 1 ,  0  },
-    {  0  ,  0  ,  0  , 1 ,  0  },
-    {  0  ,  0  ,  0  , 1 ,  0  }
+    { 0 , 1 , 0 , 1 , 0 },
+    { 0 , 1 , 0 , 1 , 0 },
+    { 0 , 1 , 1 , 1 , 0 },
+    { 0 , 0 , 0 , 1 , 0 },
+    { 0 , 0 , 0 , 1 , 0 }
   };
   npDraw(vetorRG, vetorRG, vetorB);
   npWrite();
-  npClear();
+
 }
 
 void num_5() {
   uint8_t vetorB[5][5] = {
-    {  0  , 1 , 1 , 1 ,  0  },
-    {  0  , 1 ,  0  ,  0  ,  0  },
-    {  0  , 1 , 1 , 1 ,  0  },
-    {  0  ,  0  ,  0  , 1 ,  0  },
-    {  0  , 1 , 1 , 1 ,  0  }
+    { 0 , 1 , 1 , 1 , 0 },
+    { 0 , 1 , 0 , 0 , 0 },
+    { 0 , 1 , 1 , 1 , 0 },
+    { 0 , 0 , 0 , 1 , 0 },
+    { 0 , 1 , 1 , 1 , 0 }
   };
   npDraw(vetorRG, vetorRG, vetorB);
   npWrite();
-  npClear();
+
 }
 
 void num_6() {
   uint8_t vetorB[5][5] = {
-    {  0  , 1 , 1 , 1 ,  0  },
-    {  0  , 1 ,  0  ,  0  ,  0  },
-    {  0  , 1 , 1 , 1 ,  0  },
-    {  0  , 1 ,  0  , 1 ,  0  },
-    {  0  , 1 , 1 , 1 ,  0  }
+    { 0 , 1 , 1 , 1 , 0 },
+    { 0 , 1 , 0 , 0 , 0 },
+    { 0 , 1 , 1 , 1 , 0 },
+    { 0 , 1 , 0 , 1 , 0 },
+    { 0 , 1 , 1 , 1 , 0 }
   };
   npDraw(vetorRG, vetorRG, vetorB);
   npWrite();
-  npClear();
+
 }
 
 void num_7() {
   uint8_t vetorB[5][5] = {
-    {  0  , 1 , 1 , 1 ,  0  },
-    {  0  ,  0  ,  0  , 1 ,  0  },
-    {  0  ,  0  ,  0  , 1 ,  0  },
-    {  0  ,  0  ,  0  , 1 ,  0  },
-    {  0  ,  0  ,  0  , 1 ,  0  }
+    { 0 , 1 , 1 , 1 , 0 },
+    { 0 , 0 , 0 , 1 , 0 },
+    { 0 , 0 , 0 , 1 , 0 },
+    { 0 , 0 , 0 , 1 , 0 },
+    { 0 , 0 , 0 , 1 , 0 }
   };
   npDraw(vetorRG, vetorRG, vetorB);
   npWrite();
-  npClear();
+
 }
 
 void num_8() {
   uint8_t vetorB[5][5] = {
-    {  0  , 1 , 1 , 1 ,  0  },
-    {  0  , 1 ,  0  , 1 ,  0  },
-    {  0  , 1 , 1 , 1 ,  0  },
-    {  0  , 1 ,  0  , 1 ,  0  },
-    {  0  , 1 , 1 , 1 ,  0  }
+    { 0 , 1 , 1 , 1 , 0 },
+    { 0 , 1 , 0 , 1 , 0 },
+    { 0 , 1 , 1 , 1 , 0 },
+    { 0 , 1 , 0 , 1 , 0 },
+    { 0 , 1 , 1 , 1 , 0 }
   };
   npDraw(vetorRG, vetorRG, vetorB);
   npWrite();
-  npClear();
+
 }
 
 void num_9() {
   uint8_t vetorB[5][5] = {
-    {  0  , 1 , 1 , 1 ,  0  },
-    {  0  , 1 ,  0  , 1 ,  0  },
-    {  0  , 1 , 1 , 1 ,  0  },
-    {  0  ,  0  ,  0  , 1 ,  0  },
-    {  0  ,  0  ,  0  , 1 ,  0  }
+    { 0 , 1 , 1 , 1 , 0 },
+    { 0 , 1 , 0 , 1 , 0 },
+    { 0 , 1 , 1 , 1 , 0 },
+    { 0 , 0 , 0 , 1 , 0 },
+    { 0 , 0 , 0 , 1 , 0 }
   };
   npDraw(vetorRG, vetorRG, vetorB);
   npWrite();
-  npClear();
+
 }
 
 int handle_numbers(char num) {

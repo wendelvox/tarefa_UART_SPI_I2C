@@ -6,9 +6,9 @@
 #include "hardware/pio.h"
 #include "hardware/timer.h"
 #include "hardware/clocks.h"
-#include "matriz_led.h"
-#include "inc/ssd1306.h"
-#include "inc/font.h"
+#include "bibliotecas/matriz_led.h"
+#include "bibliotecas/ssd1306.h"
+#include "bibliotecas/font.h"
 #include "ws2812.pio.h"
 
 // ---------------- Variáveis - Início ----------------
@@ -32,13 +32,16 @@ bool led_blue_state = false;   // Estado do LED Azul
 #define GREEN_RGB 11 // LED verde
 #define BLUE_RGB 12 // LED azul
 #define LUZ 1 // Intensidade da luz
+#define LED_COUNT 25 // Matriz
+#define LED_PIN 7 // WS2812
 
-// ---------------- WS2812 - Início ----------------
-#define LED_COUNT 25
-#define LED_PIN 7
 
-// ---------------- Funções de Inicialização - Início ----------------
-void start_display(ssd1306_t *ssd) {
+
+// ---------------- SETUP - INICIO ----------------
+
+void setup_init(ssd1306_t *ssd){
+
+  // Configuração do Display
   i2c_init(I2C_PORT, 400 * 1000);
   gpio_set_function(I2C_SDA, GPIO_FUNC_I2C);
   gpio_set_function(I2C_SCL, GPIO_FUNC_I2C);
@@ -49,18 +52,18 @@ void start_display(ssd1306_t *ssd) {
   ssd1306_send_data(ssd);
   ssd1306_fill(ssd, false);
   ssd1306_send_data(ssd);
-}
 
-void init_buttons() {
+  // Inicialição dos botões
+
   gpio_init(BUTTON_A);
   gpio_init(BUTTON_B);
   gpio_set_dir(BUTTON_A, GPIO_IN);
   gpio_set_dir(BUTTON_B, GPIO_IN);
   gpio_pull_up(BUTTON_A);
   gpio_pull_up(BUTTON_B);
-}
 
-void init_RGB() {
+  // Inicializaçao dos Leds RGB
+
   gpio_init(RED_RGB);
   gpio_init(GREEN_RGB);
   gpio_init(BLUE_RGB);
@@ -70,8 +73,10 @@ void init_RGB() {
   gpio_put(RED_RGB, 0);
   gpio_put(GREEN_RGB, 0);
   gpio_put(BLUE_RGB, 0);
+
 }
-// ---------------- Funções de Inicialização - Fim ----------------
+
+// ---------------- SETUP - FIM --------------------------
 
 // ---------------- Interrupções - Início ----------------
 void gpio_irq_callback(uint gpio, uint32_t events) {
@@ -98,6 +103,7 @@ void gpio_irq_callback(uint gpio, uint32_t events) {
 }
 // ---------------- Interrupções - Fim ----------------
 
+
 // ---------------- Main - Início ----------------
 int main() {
   ssd1306_t ssd;
@@ -109,12 +115,10 @@ int main() {
   gpio_set_function(0, GPIO_FUNC_UART);
   gpio_set_function(1, GPIO_FUNC_UART);
 
-  start_display(&ssd);
+  setup_init(&ssd);
   npInit(LED_PIN);
   npClear();
   npWrite();
-  init_buttons();
-  init_RGB();
 
   gpio_set_irq_enabled_with_callback(BUTTON_A, GPIO_IRQ_EDGE_FALL, true, &gpio_irq_callback);
   gpio_set_irq_enabled_with_callback(BUTTON_B, GPIO_IRQ_EDGE_FALL, true, &gpio_irq_callback);

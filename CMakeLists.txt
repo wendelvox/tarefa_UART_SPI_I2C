@@ -36,7 +36,7 @@ pico_sdk_init()
 # Add executable. Default name is the project name, version 0.1
 
 add_executable(tarefa_UART_SPI_I2C tarefa_UART_SPI_I2C.c 
-inc/ssd1306.c matriz_led.c)
+bibliotecas/ssd1306.c bibliotecas/matriz_led.c)
 
 pico_set_program_name(tarefa_UART_SPI_I2C "tarefa_UART_SPI_I2C")
 pico_set_program_version(tarefa_UART_SPI_I2C "0.1")
