@@ -1,84 +1,25 @@
+#ifndef MATRIZ_LED_H
+#define MATRIZ_LED_H
 
-// Mapeamento dos padrões de LEDs para os números de 0 a 9 (em formato 5x5)
-const bool matriz_numeros[10][25] = {
-    {
-        1, 1, 1, 1, 1,
-        1, 0, 0, 0, 1,
-        1, 0, 0, 0, 1,
-        1, 0, 0, 0, 1,
-        1, 1, 1, 1, 1  
-    },// Número 0
-    {
-        0, 1, 1, 1, 0,  
-        0, 0, 1, 0, 0,  
-        0, 0, 1, 0, 0,  
-        0, 1, 1, 0, 0,  
-        0, 0, 1, 0, 0
-    },   // Número 
+#include "pico/stdlib.h"
 
-     {
-        1, 1, 1, 1, 1, 
-        1, 0, 0, 0, 0,  
-        1, 1, 1, 1, 1,  
-        0, 0, 0, 0, 1,  
-        1, 1, 1, 1, 1   
-    }, // Número 2 
+// Definições da matriz
+#define LED_COUNT 25
+#define LED_PIN 7
 
-    {
-        1, 1, 1, 1, 1,
-        0, 0, 0, 0, 1,
-        1, 1, 1, 1, 1,
-        0, 0, 0, 0, 1,
-        1, 1, 1, 1, 1  
-    }, // Número 3
+// Definição de pixel GRB
+typedef struct {
+    uint8_t G, R, B;
+} pixel_t;
 
- 
-    {
-    1, 0, 0, 0, 0,  
-    0, 0, 0, 0, 1,  
-    1, 1, 1, 1, 1,  
-    1, 0, 0, 0, 1,  
-    1, 0, 0, 0, 1   
-    },  // Número 4
+extern pixel_t leds[LED_COUNT];
 
-    {
-    1, 1, 1, 1, 1,  
-    0, 0, 0, 0, 1,  
-    1, 1, 1, 1, 1,  
-    1, 0, 0, 0, 0,  
-    1, 1, 1, 1, 1   
-    },  // Número 5
+// Funções da biblioteca
+void npInit(uint pin);
+void npSetLED(const uint index, const uint8_t r, const uint8_t g, const uint8_t b);
+void npClear();
+void npWrite();
+void npDraw(uint8_t vetorR[5][5], uint8_t vetorG[5][5], uint8_t vetorB[5][5]);
+int handle_numbers(char num);
 
-    {
-    1, 1, 1, 1, 1,  
-    1, 0, 0, 0, 1,  
-    1, 1, 1, 1, 1,  
-    1, 0, 0, 0, 0,  
-    1, 1, 1, 1, 1   
-    },  // Número 6
-
-    {
-    0, 0, 0, 0, 1, 
-    0, 1, 0, 0, 0,  
-    0, 0, 1, 0, 0,  
-    0, 0, 0, 1, 0,  
-    1, 1, 1, 1, 1
-    },  // Número 7
-
-    {
-    1, 1, 1, 1, 1,  
-    1, 0, 0, 0, 1, 
-    1, 1, 1, 1, 1, 
-    1, 0, 0, 0, 1,  
-    1, 1, 1, 1, 1   
-    },  // Número 8
-
-    {   
-    1, 1, 1, 1, 1, 
-    0, 0, 0, 0, 1, 
-    1, 1, 1, 1, 1,  
-    1, 0, 0, 0, 1,  
-    1, 1, 1, 1, 1   
-    }   // Número 9
-
-};
+#endif // MATRIZ_LED_H

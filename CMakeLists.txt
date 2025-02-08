@@ -36,13 +36,13 @@ pico_sdk_init()
 # Add executable. Default name is the project name, version 0.1
 
 add_executable(tarefa_UART_SPI_I2C tarefa_UART_SPI_I2C.c 
-inc/ssd1306.c)
+inc/ssd1306.c matriz_led.c)
 
 pico_set_program_name(tarefa_UART_SPI_I2C "tarefa_UART_SPI_I2C")
 pico_set_program_version(tarefa_UART_SPI_I2C "0.1")
 
 # Modify the below lines to enable/disable output over UART/USB
-pico_enable_stdio_uart(tarefa_UART_SPI_I2C 0)
+pico_enable_stdio_uart(tarefa_UART_SPI_I2C 1)
 pico_enable_stdio_usb(tarefa_UART_SPI_I2C 1)
 pico_add_extra_outputs(tarefa_UART_SPI_I2C)
 
@@ -63,6 +63,9 @@ pico_stdlib
 hardware_pio    
 hardware_uart  
 hardware_i2c
+hardware_timer
+hardware_clocks
+pico_cyw43_arch_none
         )
 
 pico_add_extra_outputs(tarefa_UART_SPI_I2C)
