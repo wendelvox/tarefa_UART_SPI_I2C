@@ -1,7 +1,7 @@
 # Projeto: Controle de LEDs e Display com Raspberry Pi Pico e BitDogLab
 
 ## Autor: Wendel
-## Video: https://youtu.be/cBBmoyHNMHo
+### Video: https://youtu.be/cBBmoyHNMHo
 ## 📌 Objetivos
 
 Este projeto tem os seguintes objetivos:
